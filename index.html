@@ -2,150 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glory's Pony Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Glory's Sticker Studio ⭐ — Ponies & Kid Favorites!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #ff69b4;
+            --primary-light: #ff8ec7;
+            --primary-dark: #e04895;
+            --accent-blue: #87ceeb;
+            --accent-gold: #ffd700;
+            --accent-purple: #9b59b6;
+            --accent-green: #2ecc71;
+            --bg-sidebar: linear-gradient(180deg, #2d1847 0%, #170d2c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 105, 180, 0.25);
+            --sidebar-width: 440px;
+            --sidebar-collapsed-width: 54px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
         body {
             width: 100vw;
             height: 100vh;
             overflow: hidden;
             font-family: 'Nunito', sans-serif;
-            background: #1a1a2e;
+            background: #140d23;
+            color: #ffffff;
+            cursor: default;
         }
 
-        .sidebar {
+        /* Ambient Canvas Background */
+        .canvas {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 260px;
-            height: 100vh;
-            background: linear-gradient(180deg, #2d1b4e 0%, #1a1035 100%);
-            border-right: 3px solid rgba(255,105,180,0.3);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .sidebar.collapsed {
-            width: 52px;
-        }
-
-        .sidebar.collapsed .sidebar-content { opacity: 0; pointer-events: none; }
-        .sidebar.collapsed .sidebar-header span { display: none; }
-        .sidebar.collapsed .sidebar-header .toggle-icon { transform: rotate(180deg); }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px;
-            border-bottom: 2px solid rgba(255,105,180,0.2);
-            min-height: 56px;
-        }
-
-        .logo-text {
-            font-family: 'Fredoka One', cursive;
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, #ff69b4, #87ceeb, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            white-space: nowrap;
-            transition: opacity 0.2s;
-        }
-
-        .toggle-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255,105,180,0.15);
-            color: #ff69b4;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .toggle-btn:hover { background: rgba(255,105,180,0.3); }
-
-        .toggle-icon { transition: transform 0.3s; }
-
-        .sidebar-content {
-            flex: 1;
-            overflow-y: auto;
-            transition: opacity 0.2s;
-            scrollbar-width: thin;
-            scrollbar-color: #ff69b4 #2d1b4e;
-        }
-
-        .sidebar-content::-webkit-scrollbar { width: 5px; }
-        .sidebar-content::-webkit-scrollbar-thumb { background: #ff69b4; border-radius: 3px; }
-
-        .section {
-            padding: 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .section-title {
-            font-family: 'Fredoka One', cursive;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ff69b4;
-            margin-bottom: 10px;
-        }
-
-        .bg-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-        }
-
-        .bg-card {
-            aspect-ratio: 16/10;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bg-card:hover { border-color: rgba(255,105,180,0.5); transform: scale(1.03); }
-        .bg-card.active { border-color: #ff69b4; box-shadow: 0 0 12px rgba(255,105,180,0.3); }
-
-        .bg-card img, .bg-card .gradient-preview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .bg-card .bg-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+            left: var(--sidebar-width);
             right: 0;
-            padding: 2px 0;
-            text-align: center;
-            color: white;
-            font-size: 0.55rem;
-            font-weight: 700;
-            background: rgba(0,0,0,0.5);
+            bottom: 0;
+            overflow: hidden;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            touch-action: none;
+            background-color: #1a1035;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
-        .gradient-preview {
-            background: linear-gradient(135deg, #fff 0%, #ffc0cb 20%, #ffe4b5 35%, #fffacd 50%, #90ee90 65%, #87ceeb 80%, #dda0dd 90%, #fff 100%);
-            background-size: 300% 300%;
-            animation: gradientShift 8s ease infinite;
+        .sidebar.collapsed ~ .canvas {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        .canvas-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #ffc0cb 20%, #ffe4b5 35%, #fffacd 50%, #90ee90 65%, #87ceeb 80%, #dda0dd 90%, #ffffff 100%);
+            background-size: 350% 350%;
+            animation: gradientShift 14s ease infinite;
+            pointer-events: none;
         }
 
         @keyframes gradientShift {
@@ -154,20 +76,511 @@
             100% { background-position: 0% 50%; }
         }
 
-        .sticker-shelf {
+        /* Particle Overlay */
+        #particleCanvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 3px solid var(--glass-border);
+            z-index: 1000;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.5);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.collapsed .sidebar-content,
+        .sidebar.collapsed .logo-title,
+        .sidebar.collapsed .header-actions {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar.collapsed .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+            min-height: 60px;
+            background: rgba(45, 24, 71, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .logo-icon {
+            font-size: 1.5rem;
+            animation: gentleBob 2.5s ease-in-out infinite;
+        }
+
+        @keyframes gentleBob {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(5deg); }
+        }
+
+        .logo-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.15rem;
+            background: linear-gradient(135deg, #ff69b4, #ffd700, #87ceeb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 105, 180, 0.15);
+            color: #ffb6c1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 105, 180, 0.35);
+            color: #ffffff;
+            transform: scale(1.08);
+            border-color: #ff69b4;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        /* Sidebar Content */
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: opacity 0.2s;
+            scrollbar-width: thin;
+            scrollbar-color: #ff69b4 #1f1136;
+            padding-bottom: 24px;
+        }
+
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 4px;
+        }
+
+        .section {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ff8ec7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-badge {
+            background: rgba(255, 105, 180, 0.25);
+            color: #ffd700;
+            font-size: 0.65rem;
+            padding: 2px 7px;
+            border-radius: 20px;
+            font-weight: 800;
+        }
+
+        /* Search Input */
+        .search-box {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 20px;
+            padding: 6px 30px 6px 12px;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 14px;
+            display: none;
+        }
+
+        .search-clear:hover {
+            color: white;
+        }
+
+        /* Category Filter Pills */
+        .cat-pills {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+
+        .cat-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-pill {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d8c2e6;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .cat-pill:hover {
+            background: rgba(255, 105, 180, 0.2);
+            color: white;
+        }
+
+        .cat-pill.active {
+            background: linear-gradient(135deg, #ff69b4, #9b59b6);
+            color: white;
+            border-color: #ff69b4;
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.4);
+        }
+
+        /* Backgrounds Grid */
+        .bg-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .bg-card {
+            aspect-ratio: 16/10;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .bg-card:hover {
+            border-color: rgba(255, 105, 180, 0.8);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+        }
+
+        .bg-card.active {
+            border-color: #ffd700;
+            box-shadow: 0 0 14px rgba(255, 215, 0, 0.6);
+            transform: scale(1.02);
+        }
+
+        .bg-card img, .bg-card .gradient-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .bg-card .bg-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 3px 2px;
+            text-align: center;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .gradient-preview {
+            background: linear-gradient(135deg, #fff 0%, #ffc0cb 20%, #ffe4b5 35%, #fffacd 50%, #90ee90 65%, #87ceeb 80%, #dda0dd 90%, #fff 100%);
+            background-size: 250% 250%;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        /* Characters Shelf */
+        .character-shelf {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: #ff69b4 #1f1136;
+        }
+
+        .character-shelf::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .character-shelf::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 4px;
+        }
+
+        .char-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 14px;
+            padding: 6px 4px 4px 4px;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        .char-card:hover {
+            transform: scale(1.08);
+            border-color: rgba(255, 105, 180, 0.5);
+            background: rgba(255, 105, 180, 0.12);
+        }
+
+        .char-card:active {
+            transform: scale(0.96);
+        }
+
+        .char-img-wrap {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .char-img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.2s;
+        }
+
+        .char-card:hover .char-img-wrap img {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .char-name {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #eeddf8;
+            margin-top: 4px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .char-emoji {
+            font-size: 48px;
+            line-height: 64px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .char-card:hover .char-emoji {
+            transform: scale(1.15) rotate(-4deg);
+            display: inline-block;
+        }
+
+        .fav-star {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.35);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .fav-star:hover {
+            transform: scale(1.25);
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+
+        .fav-star.active {
+            color: #ffd700;
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .surprise-btn {
+            width: 100%;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff69b4, #ffd700, #87ceeb);
+            border: none;
+            border-radius: 14px;
+            padding: 10px;
+            color: #1a1035;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .surprise-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 18px rgba(255, 105, 180, 0.5);
+        }
+
+        .surprise-btn:active {
+            transform: scale(0.97);
+        }
+
+        .empty-shelf {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 18px 8px;
+            line-height: 1.6;
+        }
+
+        /* Decorations Shelf */
+        .decor-tools {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .bubble-btn {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.3), rgba(135, 206, 235, 0.3));
+            border: 1px dashed #ff69b4;
+            border-radius: 12px;
+            padding: 8px 10px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.72rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .bubble-btn:hover {
+            background: linear-gradient(135deg, #ff69b4, #87ceeb);
+            color: #1a1035;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+            border-style: solid;
+        }
+
+        .sticker-shelf {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
             gap: 6px;
         }
 
         .sticker-thumb {
-            width: 48px;
-            height: 48px;
+            aspect-ratio: 1;
             border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.08);
+            background: transparent;
+            border: 1px solid transparent;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,441 +588,2098 @@
         }
 
         .sticker-thumb:hover {
-            transform: scale(1.1) rotate(-3deg);
-            border-color: #ff69b4;
-            background: rgba(255,105,180,0.1);
+            transform: scale(1.2) rotate(-5deg);
+            border-color: rgba(255, 105, 180, 0.5);
+            background: rgba(255, 105, 180, 0.12);
         }
 
-        .sticker-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .sticker-thumb:active {
+            transform: scale(0.95);
         }
 
         .sticker-thumb .emoji-sticker {
             font-size: 22px;
+            line-height: 1;
         }
 
-        .canvas {
-            position: fixed;
-            top: 0;
-            left: 260px;
-            right: 0;
-            bottom: 0;
-            background-size: cover;
-            background-position: center;
-            overflow: hidden;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Ambient FX Selector */
+        .fx-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .sidebar.collapsed ~ .canvas { left: 52px; }
-
-        .canvas-gradient {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #fff 0%, #ffc0cb 20%, #ffe4b5 35%, #fffacd 50%, #90ee90 65%, #87ceeb 80%, #dda0dd 90%, #fff 100%);
-            background-size: 300% 300%;
-            animation: gradientShift 15s ease infinite;
+        .fx-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 2px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
         }
 
+        .fx-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .fx-btn.active {
+            background: #ff69b4;
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.4);
+        }
+
+        /* Sticker on Canvas */
         .sticker {
             position: absolute;
             cursor: grab;
             user-select: none;
             z-index: 10;
-            transition: filter 0.15s ease;
+            touch-action: none;
+            display: inline-block;
+            transform-origin: center center;
+            transition: filter 0.15s ease, outline 0.15s ease;
         }
 
-        .sticker:hover { filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4)); z-index: 50; }
-        .sticker:active { cursor: grabbing; }
+        .sticker:hover {
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+            z-index: 80;
+        }
+
+        .sticker:active {
+            cursor: grabbing;
+        }
 
         .sticker.dragging {
-            filter: drop-shadow(0 10px 24px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.6));
             transition: none;
-            z-index: 100;
+            z-index: 500 !important;
         }
 
         .sticker.selected {
             outline: 2px dashed #ff69b4;
             outline-offset: 6px;
+            border-radius: 4px;
         }
 
-        .sticker .delete-btn {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #ff4757;
-            color: white;
-            border: 2px solid #1a1035;
-            font-size: 11px;
-            cursor: pointer;
+        /* Floating handles on selected sticker */
+        .sticker-ctrl {
             display: none;
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
             align-items: center;
             justify-content: center;
-            z-index: 101;
-            line-height: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            z-index: 600;
+            transition: transform 0.15s;
         }
 
-        .sticker:hover .delete-btn { display: flex; }
+        .sticker.selected .sticker-ctrl {
+            display: flex;
+        }
 
+        .sticker-ctrl:hover {
+            transform: scale(1.2);
+        }
+
+        .sticker-ctrl.del {
+            top: -16px;
+            right: -16px;
+            background: #ff4757;
+        }
+
+        .sticker-ctrl.flip {
+            top: -16px;
+            left: -16px;
+            background: #9b59b6;
+        }
+
+        .sticker-ctrl.rotate {
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3498db;
+        }
+
+        .sticker-ctrl.rotate:hover {
+            transform: translateX(-50%) scale(1.2);
+        }
+
+        .sticker-ctrl.dup {
+            bottom: -16px;
+            left: -16px;
+            background: #2ecc71;
+        }
+
+        .sticker-ctrl.resize {
+            bottom: -16px;
+            right: -16px;
+            background: #e67e22;
+            cursor: nwse-resize;
+        }
+
+        .sticker-content {
+            display: block;
+            pointer-events: none;
+            transform-origin: center center;
+        }
+
+        .sticker img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* Speech Bubble Sticker */
+        .speech-bubble {
+            background: #ffffff;
+            color: #2d1847;
+            padding: 10px 16px;
+            border-radius: 18px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 16px;
+            border: 3px solid #ff69b4;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 90px;
+            max-width: 280px;
+            text-align: center;
+            position: relative;
+            outline: none;
+            word-wrap: break-word;
+            line-height: 1.25;
+            cursor: text;
+        }
+
+        .speech-bubble-tail {
+            position: absolute;
+            bottom: -14px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 14px solid #ff69b4;
+            pointer-events: none;
+        }
+
+        .speech-bubble-tail::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #ffffff;
+        }
+
+        /* Sparkle Burst FX Particles */
+        .burst-particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 9999;
+            animation: burstAnim 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes burstAnim {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        /* Bottom Floating Toolbar */
         .toolbar {
             position: fixed;
-            bottom: 16px;
+            bottom: 18px;
             left: 50%;
-            transform: translateX(calc(-50% + 130px));
+            transform: translateX(calc(-50% + (var(--sidebar-width) / 2)));
             z-index: 100;
-            background: rgba(45,27,78,0.9);
+            background: rgba(45, 24, 71, 0.85);
             padding: 8px 18px;
             border-radius: 50px;
-            backdrop-filter: blur(16px);
-            border: 2px solid rgba(255,105,180,0.25);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar.collapsed ~ .toolbar { transform: translateX(calc(-50% + 26px)); }
+        .sidebar.collapsed ~ .toolbar {
+            transform: translateX(calc(-50% + (var(--sidebar-collapsed-width) / 2)));
+        }
 
         .toolbar-btn {
-            width: 38px;
             height: 38px;
-            border-radius: 50%;
-            border: none;
+            padding: 0 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 16px;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            font-size: 14px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            white-space: nowrap;
         }
 
-        .toolbar-btn:hover { transform: scale(1.1); }
+        .toolbar-btn.icon-only {
+            width: 38px;
+            padding: 0;
+            border-radius: 50%;
+        }
 
-        .toolbar-btn.resize { background: rgba(135,206,235,0.2); color: #87ceeb; }
-        .toolbar-btn.resize:hover { background: #87ceeb; color: #1a1a2e; }
+        .toolbar-btn:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.08);
+        }
 
-        .toolbar-btn.dup { background: rgba(255,105,180,0.2); color: #ff69b4; }
-        .toolbar-btn.dup:hover { background: #ff69b4; color: white; }
+        .toolbar-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
 
-        .toolbar-btn.clear { background: rgba(255,71,87,0.2); color: #ff4757; }
-        .toolbar-btn.clear:hover { background: #ff4757; color: white; }
+        .toolbar-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        .sticker-count {
-            color: rgba(255,255,255,0.4);
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 4px;
+        .toolbar-btn.save {
+            background: linear-gradient(135deg, #ff69b4, #ffd700);
+            color: #170d2c;
+            border: none;
+            font-family: 'Fredoka One', cursive;
+            padding: 0 16px;
+            font-size: 13px;
+        }
+
+        .toolbar-btn.save:hover {
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .toolbar-btn.primary {
+            background: rgba(255, 105, 180, 0.25);
+            color: #ffb6c1;
+        }
+
+        .toolbar-btn.primary:hover:not(:disabled) {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .toolbar-btn.accent {
+            background: rgba(135, 206, 235, 0.2);
+            color: #87ceeb;
+        }
+
+        .toolbar-btn.accent:hover:not(:disabled) {
+            background: #87ceeb;
+            color: #170d2c;
+        }
+
+        .toolbar-btn.danger {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+
+        .toolbar-btn.danger:hover:not(:disabled) {
+            background: #ff4757;
+            color: white;
         }
 
         .toolbar-divider {
             width: 1px;
             height: 22px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.15);
         }
 
-        @media (max-width: 768px) {
-            .sidebar { width: 52px; }
-            .sidebar .sidebar-content { opacity: 0; pointer-events: none; }
-            .sidebar .logo-text { display: none; }
-            .canvas { left: 52px; }
-            .toolbar { transform: translateX(calc(-50% + 26px)); }
+        .sticker-badge {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #ffd700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(calc(-50% + (var(--sidebar-width) / 2))) translateY(-80px);
+            background: rgba(45, 24, 71, 0.95);
+            border: 2px solid #ff69b4;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.9rem;
+            z-index: 2000;
+            backdrop-filter: blur(15px);
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar.collapsed ~ .toast {
+            transform: translateX(calc(-50% + (var(--sidebar-collapsed-width) / 2))) translateY(-80px);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(calc(-50% + (var(--sidebar-width) / 2))) translateY(0);
+        }
+
+        .sidebar.collapsed ~ .toast.show {
+            transform: translateX(calc(-50% + (var(--sidebar-collapsed-width) / 2))) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            :root {
+                --sidebar-width: 270px;
+            }
+            .character-shelf {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .toolbar {
+                gap: 5px;
+                padding: 6px 12px;
+            }
+            .toolbar-btn.label-btn span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --sidebar-width: 54px;
+            }
+            .sidebar {
+                width: 54px;
+            }
+            .sidebar-content, .logo-title, .header-actions {
+                display: none;
+            }
+            .canvas {
+                left: 54px;
+            }
+            .toolbar {
+                transform: translateX(calc(-50% + 27px));
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="logo-text">Glory's Pony Studio</span>
-            <button class="toggle-btn" id="toggleSidebar">
-                <span class="toggle-icon">◀</span>
-            </button>
+            <div class="logo-wrap">
+                <span class="logo-icon">⭐</span>
+                <span class="logo-title">Glory's Sticker Studio</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="soundToggle" title="Toggle Sound">🔊</button>
+                <button class="icon-btn" id="toggleSidebar" title="Collapse Sidebar">
+                    <span class="toggle-icon">◀</span>
+                </button>
+            </div>
         </div>
+
         <div class="sidebar-content">
+            <!-- Backgrounds -->
             <div class="section">
-                <div class="section-title">Backgrounds</div>
-                <div class="bg-grid">
-                    <div class="bg-card active" data-bg="gradient">
-                        <div class="gradient-preview"></div>
-                        <span class="bg-label">Rainbow</span>
-                    </div>
-                    <div class="bg-card" data-bg="mainstreet">
-                        <img src="ponyville-mainstreet.jpg" alt="Mainstreet">
-                        <span class="bg-label">Mainstreet</span>
-                    </div>
-                    <div class="bg-card" data-bg="library">
-                        <img src="twilight-library.jpg" alt="Library">
-                        <span class="bg-label">Library</span>
-                    </div>
-                    <div class="bg-card" data-bg="abbey">
-                        <img src="abbey-road.webp" alt="Abbey Road">
-                        <span class="bg-label">Abbey Road</span>
-                    </div>
-                    <div class="bg-card" data-bg="carealot">
-                        <img src="carealot.jpg" alt="Care-a-lot">
-                        <span class="bg-label">Care-a-lot</span>
-                    </div>
+                <div class="section-header">
+                    <span class="section-title">🖼️ Backgrounds</span>
+                    <span class="section-badge" id="bgCount">9</span>
+                </div>
+                <div class="bg-grid" id="bgGrid"></div>
+            </div>
+
+            <!-- Ambient FX -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">✨ Ambient Magic</span>
+                </div>
+                <div class="fx-selector">
+                    <button class="fx-btn active" data-fx="sparkles">✨ Sparkles</button>
+                    <button class="fx-btn" data-fx="butterflies">🦋 Flutters</button>
+                    <button class="fx-btn" data-fx="hearts">💖 Hearts</button>
+                    <button class="fx-btn" data-fx="stars">⭐ Stars</button>
+                    <button class="fx-btn" data-fx="none">🚫 Off</button>
                 </div>
             </div>
 
+            <!-- Characters -->
             <div class="section">
-                <div class="section-title">Characters</div>
-                <div class="sticker-shelf">
-                    <div class="sticker-thumb" data-src="fluttershy-smirk.png" data-name="Fluttershy">
-                        <img src="fluttershy-smirk.png" alt="Fluttershy">
-                    </div>
-                    <div class="sticker-thumb" data-src="twilight.png" data-name="Twilight Sparkle">
-                        <img src="twilight.png" alt="Twilight Sparkle">
-                    </div>
-                    <div class="sticker-thumb" data-src="pinkie.webp" data-name="Pinkie Pie">
-                        <img src="pinkie.webp" alt="Pinkie Pie">
-                    </div>
-                    <div class="sticker-thumb" data-src="applejack.webp" data-name="Applejack">
-                        <img src="applejack.webp" alt="Applejack">
-                    </div>
-                    <div class="sticker-thumb" data-src="rarity.webp" data-name="Rarity">
-                        <img src="rarity.webp" alt="Rarity">
-                    </div>
-                    <div class="sticker-thumb" data-src="rainbowdash.webp" data-name="Rainbow Dash">
-                        <img src="rainbowdash.webp" alt="Rainbow Dash">
-                    </div>
-                    <div class="sticker-thumb" data-src="grumpy-bear.png" data-name="Grumpy Bear">
-                        <img src="grumpy-bear.png" alt="Grumpy Bear">
-                    </div>
-                    <div class="sticker-thumb" data-src="cheer-bear.webp" data-name="Cheer Bear">
-                        <img src="cheer-bear.webp" alt="Cheer Bear">
-                    </div>
-                    <div class="sticker-thumb" data-src="wish-bear.webp" data-name="Wish Bear">
-                        <img src="wish-bear.webp" alt="Wish Bear">
-                    </div>
+                <div class="section-header">
+                    <span class="section-title">⭐ Stickers</span>
+                    <span class="section-badge" id="charCount">28</span>
                 </div>
+
+                <button class="surprise-btn" id="surpriseBtn">🎲 Surprise Me!</button>
+
+                <!-- Search -->
+                <div class="search-box">
+                    <input type="text" class="search-input" id="charSearch" placeholder="🔍 Search all stickers...">
+                    <button class="search-clear" id="searchClear">×</button>
+                </div>
+
+                <!-- Category Pills (rendered by JS with live counts) -->
+                <div class="cat-pills" id="catPills"></div>
+
+                <!-- Shelf -->
+                <div class="character-shelf" id="characterShelf"></div>
             </div>
 
+            <!-- Decorations & Props -->
             <div class="section">
-                <div class="section-title">Decorations</div>
-                <div class="sticker-shelf">
-                    <div class="sticker-thumb" data-emoji="🦋"><span class="emoji-sticker">🦋</span></div>
-                    <div class="sticker-thumb" data-emoji="🌸"><span class="emoji-sticker">🌸</span></div>
-                    <div class="sticker-thumb" data-emoji="✨"><span class="emoji-sticker">✨</span></div>
-                    <div class="sticker-thumb" data-emoji="⭐"><span class="emoji-sticker">⭐</span></div>
-                    <div class="sticker-thumb" data-emoji="🌈"><span class="emoji-sticker">🌈</span></div>
-                    <div class="sticker-thumb" data-emoji="💖"><span class="emoji-sticker">💖</span></div>
-                    <div class="sticker-thumb" data-emoji="🎀"><span class="emoji-sticker">🎀</span></div>
-                    <div class="sticker-thumb" data-emoji="🍬"><span class="emoji-sticker">🍬</span></div>
-                    <div class="sticker-thumb" data-emoji="🧁"><span class="emoji-sticker">🧁</span></div>
-                    <div class="sticker-thumb" data-emoji="🍓"><span class="emoji-sticker">🍓</span></div>
-                    <div class="sticker-thumb" data-emoji="🎵"><span class="emoji-sticker">🎵</span></div>
-                    <div class="sticker-thumb" data-emoji="🌙"><span class="emoji-sticker">🌙</span></div>
-                    <div class="sticker-thumb" data-emoji="☁️"><span class="emoji-sticker">☁️</span></div>
-                    <div class="sticker-thumb" data-emoji="🌺"><span class="emoji-sticker">🌺</span></div>
-                    <div class="sticker-thumb" data-emoji="🍀"><span class="emoji-sticker">🍀</span></div>
-                    <div class="sticker-thumb" data-emoji="❤️"><span class="emoji-sticker">❤️</span></div>
-                    <div class="sticker-thumb" data-emoji="💜"><span class="emoji-sticker">💜</span></div>
-                    <div class="sticker-thumb" data-emoji="📖"><span class="emoji-sticker">📖</span></div>
-                    <div class="sticker-thumb" data-emoji="🦋"><span class="emoji-sticker">🦋</span></div>
-                    <div class="sticker-thumb" data-emoji="🌟"><span class="emoji-sticker">🌟</span></div>
-                    <div class="sticker-thumb" data-emoji="🎈"><span class="emoji-sticker">🎈</span></div>
-                    <div class="sticker-thumb" data-emoji="🍰"><span class="emoji-sticker">🍰</span></div>
-                    <div class="sticker-thumb" data-emoji="👑"><span class="emoji-sticker">👑</span></div>
-                    <div class="sticker-thumb" data-emoji="💫"><span class="emoji-sticker">💫</span></div>
-                    <div class="sticker-thumb" data-emoji="🌻"><span class="emoji-sticker">🌻</span></div>
-                    <div class="sticker-thumb" data-emoji="🍎"><span class="emoji-sticker">🍎</span></div>
-                    <div class="sticker-thumb" data-emoji="💎"><span class="emoji-sticker">💎</span></div>
-                    <div class="sticker-thumb" data-emoji="⚡"><span class="emoji-sticker">⚡</span></div>
+                <div class="section-header">
+                    <span class="section-title">💬 Props & Magic</span>
                 </div>
+                <div class="decor-tools">
+                    <button class="bubble-btn" id="addSpeechBubble">
+                        <span>💬</span> Add Speech Bubble
+                    </button>
+                </div>
+                <div class="sticker-shelf" id="emojiShelf"></div>
             </div>
         </div>
     </div>
 
+    <!-- Canvas -->
     <div class="canvas" id="canvas">
         <div class="canvas-gradient" id="canvasGradient"></div>
+        <canvas id="particleCanvas"></canvas>
     </div>
 
-    <div class="toolbar">
-        <button class="toolbar-btn resize" id="sizeDown" title="Smaller">−</button>
-        <button class="toolbar-btn resize" id="sizeUp" title="Bigger">+</button>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastIcon">✨</span>
+        <span id="toastMsg">Ready!</span>
+    </div>
+
+    <!-- Floating Bottom Toolbar -->
+    <div class="toolbar" id="toolbar">
+        <button class="toolbar-btn icon-only" id="undoBtn" title="Undo (Ctrl+Z)" disabled>↺</button>
+        <button class="toolbar-btn icon-only" id="redoBtn" title="Redo (Ctrl+Y)" disabled>↻</button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn dup" id="duplicate" title="Duplicate">⧉</button>
-        <button class="toolbar-btn dup" id="fullscreen" title="Fullscreen">⛶</button>
+        <button class="toolbar-btn icon-only accent" id="flipBtn" title="Flip Horizontal (F)">↔</button>
+        <button class="toolbar-btn icon-only accent" id="rotateBtn" title="Rotate 45° (R)">🔄</button>
+        <button class="toolbar-btn icon-only accent" id="sizeDown" title="Smaller (−)">−</button>
+        <button class="toolbar-btn icon-only accent" id="sizeUp" title="Bigger (+)">+</button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn clear" id="clearAll" title="Clear all">✕</button>
-        <span class="sticker-count"><span id="count">0</span></span>
+        <button class="toolbar-btn icon-only primary" id="layerUpBtn" title="Bring to Front (PageUp)">▲</button>
+        <button class="toolbar-btn icon-only primary" id="layerDownBtn" title="Send to Back (PageDown)">▼</button>
+        <button class="toolbar-btn icon-only primary" id="duplicateBtn" title="Duplicate (Ctrl+D)">⧉</button>
+        <div class="toolbar-divider"></div>
+        <button class="toolbar-btn save" id="saveImageBtn" title="Download High-Res Picture">
+            <span>📸</span> Save Art
+        </button>
+        <button class="toolbar-btn icon-only" id="fullscreenBtn" title="Toggle Fullscreen">⛶</button>
+        <button class="toolbar-btn icon-only danger" id="clearAllBtn" title="Clear Canvas">🗑️</button>
+        <div class="toolbar-divider"></div>
+        <span class="sticker-badge" id="stickerCount">0 items</span>
     </div>
 
     <script>
+        /* ==========================================================
+           1. DATA DEFINITIONS
+           ========================================================== */
+        const BACKGROUNDS = [
+            { id: 'gradient', name: 'Rainbow', previewClass: 'gradient-preview', type: 'gradient' },
+            { id: 'cottage', name: 'Cottage', file: 'fluttershy-cottage.jpg', type: 'image' },
+            { id: 'canterlot', name: 'Canterlot', file: 'canterlot.jpg', type: 'image' },
+            { id: 'mainstreet', name: 'Mainstreet', file: 'ponyville-mainstreet.jpg', type: 'image' },
+            { id: 'library', name: 'Library', file: 'twilight-library.jpg', type: 'image' },
+            { id: 'sweetapple', name: 'Sweet Apple', file: 'sweet-apple-acres.png', type: 'image' },
+            { id: 'cloudsdale', name: 'Cloudsdale', file: 'cloudsdale.jpg', type: 'image' },
+            { id: 'carealot', name: 'Care-a-lot', file: 'carealot.jpg', type: 'image' },
+            { id: 'abbey', name: 'Abbey Road', file: 'abbey-road.webp', type: 'image' }
+        ];
+
+        const CHARACTERS = [
+            // Mane 6
+            { id: 'fluttershy', name: 'Fluttershy', src: 'fluttershy-smirk.png', cat: 'mane6', tag: 'Kindness' },
+            { id: 'twilight', name: 'Twilight Sparkle', src: 'twilight.png', cat: 'mane6', tag: 'Friendship' },
+            { id: 'pinkie', name: 'Pinkie Pie', src: 'pinkie.webp', cat: 'mane6', tag: 'Laughter' },
+            { id: 'rainbowdash', name: 'Rainbow Dash', src: 'rainbowdash.webp', cat: 'mane6', tag: 'Loyalty' },
+            { id: 'applejack', name: 'Applejack', src: 'applejack.webp', cat: 'mane6', tag: 'Honesty' },
+            { id: 'rarity', name: 'Rarity', src: 'rarity.webp', cat: 'mane6', tag: 'Generosity' },
+            // Royalty & Spells
+            { id: 'celestia', name: 'Princess Celestia', src: 'celestia.png', cat: 'royalty', tag: 'Sun Princess' },
+            { id: 'luna', name: 'Princess Luna', src: 'luna.png', cat: 'royalty', tag: 'Night Princess' },
+            { id: 'cadance', name: 'Princess Cadance', src: 'cadance.png', cat: 'royalty', tag: 'Love Princess' },
+            { id: 'spike', name: 'Spike', src: 'spike.png', cat: 'royalty', tag: 'Dragon' },
+            { id: 'starlight', name: 'Starlight Glimmer', src: 'starlight.png', cat: 'royalty', tag: 'Magic' },
+            { id: 'sunset', name: 'Sunset Shimmer', src: 'sunset.png', cat: 'royalty', tag: 'Empathy' },
+            // Friends
+            { id: 'trixie', name: 'Great Trixie', src: 'trixie.png', cat: 'friends', tag: 'Powerful' },
+            { id: 'discord', name: 'Discord', src: 'discord.png', cat: 'friends', tag: 'Chaos' },
+            { id: 'bigmac', name: 'Big Macintosh', src: 'bigmac.png', cat: 'friends', tag: 'Eeyup' },
+            { id: 'derpy', name: 'Derpy Hooves', src: 'derpy.png', cat: 'friends', tag: 'Muffins' },
+            // CMC & Pets
+            { id: 'applebloom', name: 'Apple Bloom', src: 'applebloom.png', cat: 'cmc', tag: 'Crusader' },
+            { id: 'sweetiebelle', name: 'Sweetie Belle', src: 'sweetiebelle.png', cat: 'cmc', tag: 'Crusader' },
+            { id: 'scootaloo', name: 'Scootaloo', src: 'scootaloo.png', cat: 'cmc', tag: 'Crusader' },
+            { id: 'angelbunny', name: 'Angel Bunny', src: 'angelbunny.png', cat: 'cmc', tag: 'Pet Bunny' },
+            // Care Bears
+            { id: 'cheer', name: 'Cheer Bear', src: 'cheer-bear.webp', cat: 'carebears', tag: 'Cheer' },
+            { id: 'grumpy', name: 'Grumpy Bear', src: 'grumpy-bear.png', cat: 'carebears', tag: 'Grumpy' },
+            { id: 'wish', name: 'Wish Bear', src: 'wish-bear.webp', cat: 'carebears', tag: 'Wishes' },
+            { id: 'funshine', name: 'Funshine Bear', src: 'funshine-bear.webp', cat: 'carebears', tag: 'Sun' },
+            { id: 'share', name: 'Share Bear', src: 'share-bear.webp', cat: 'carebears', tag: 'Sharing' },
+            { id: 'tenderheart', name: 'Tenderheart Bear', src: 'tenderheart-bear.webp', cat: 'carebears', tag: 'Love' },
+            { id: 'goodluck', name: 'Good Luck Bear', src: 'good-luck-bear.webp', cat: 'carebears', tag: 'Luck' },
+            { id: 'bedtime', name: 'Bedtime Bear', src: 'bedtime-bear.webp', cat: 'carebears', tag: 'Dreams' },
+            // Peppa & Friends (emoji-style fan stickers)
+            { id: 'peppa', name: 'Peppa', emoji: '🐷', cat: 'peppa', tag: 'Peppa Pig' },
+            { id: 'peppa-george', name: 'George', emoji: '🦖', cat: 'peppa', tag: 'Mr Dinosaur' },
+            { id: 'peppa-mummy', name: 'Mummy Pig', emoji: '🐽', cat: 'peppa', tag: 'Mummy' },
+            { id: 'peppa-daddy', name: 'Daddy Pig', emoji: '🐗', cat: 'peppa', tag: 'Daddy' },
+            { id: 'peppa-suzy', name: 'Suzy Sheep', emoji: '🐑', cat: 'peppa', tag: 'Best Friend' },
+            { id: 'peppa-danny', name: 'Danny Dog', emoji: '🐶', cat: 'peppa', tag: 'Dog Friend' },
+            { id: 'peppa-rebecca', name: 'Rebecca Rabbit', emoji: '🐰', cat: 'peppa', tag: 'Rabbit Friend' },
+            { id: 'peppa-pedro', name: 'Pedro Pony', emoji: '🐴', cat: 'peppa', tag: 'Pony Friend' },
+            { id: 'peppa-puddle', name: 'Muddy Puddle', emoji: '💧', cat: 'peppa', tag: 'Jump In' },
+            { id: 'peppa-teddy', name: 'Teddy', emoji: '🧸', cat: 'peppa', tag: 'Teddy Bear' },
+            // Bluey & Family (emoji-style fan stickers)
+            { id: 'bluey', name: 'Bluey', emoji: '🐶', cat: 'bluey', tag: 'Blue Heeler' },
+            { id: 'bluey-bingo', name: 'Bingo', emoji: '🐕', cat: 'bluey', tag: 'Little Sister' },
+            { id: 'bluey-bandit', name: 'Bandit', emoji: '🦮', cat: 'bluey', tag: 'Dad' },
+            { id: 'bluey-chilli', name: 'Chilli', emoji: '🐩', cat: 'bluey', tag: 'Mum' },
+            { id: 'bluey-muffin', name: 'Muffin', emoji: '🐾', cat: 'bluey', tag: 'Cousin' },
+            { id: 'bluey-socks', name: 'Socks', emoji: '🧦', cat: 'bluey', tag: 'Cousin' },
+            { id: 'bluey-house', name: 'Bluey House', emoji: '🏠', cat: 'bluey', tag: 'Home' },
+            { id: 'bluey-keepy', name: 'Keepy Uppy', emoji: '🎈', cat: 'bluey', tag: 'Balloon Game' },
+            { id: 'bluey-tennis', name: 'Tennis Ball', emoji: '🎾', cat: 'bluey', tag: 'Tennis' },
+            // Baby Shark Family (emoji-style fan stickers)
+            { id: 'shark-baby', name: 'Baby Shark', emoji: '🦈', cat: 'babyshark', tag: 'Doo Doo' },
+            { id: 'shark-mommy', name: 'Mommy Shark', emoji: '💙', cat: 'babyshark', tag: 'Mommy' },
+            { id: 'shark-daddy', name: 'Daddy Shark', emoji: '🤿', cat: 'babyshark', tag: 'Daddy' },
+            { id: 'shark-grandma', name: 'Grandma Shark', emoji: '👵', cat: 'babyshark', tag: 'Grandma' },
+            { id: 'shark-grandpa', name: 'Grandpa Shark', emoji: '👴', cat: 'babyshark', tag: 'Grandpa' },
+            { id: 'shark-bubbles', name: 'Bubbles', emoji: '🫧', cat: 'babyshark', tag: 'Bubbles' },
+            { id: 'shark-fish', name: 'Little Fish', emoji: '🐠', cat: 'babyshark', tag: 'Fish Friend' },
+            { id: 'shark-anchor', name: 'Anchor', emoji: '⚓', cat: 'babyshark', tag: 'Sea' },
+            // Finny the Shark (emoji-style fan stickers)
+            { id: 'finny', name: 'Finny', emoji: '🏄', cat: 'finny', tag: 'Surfer Kid' },
+            { id: 'finny-sharkdog', name: 'Sharkdog', emoji: '🦈', cat: 'finny', tag: 'Shark Pup' },
+            { id: 'finny-max', name: 'Max', emoji: '👦', cat: 'finny', tag: 'Best Friend' },
+            { id: 'finny-olivia', name: 'Olivia', emoji: '👧', cat: 'finny', tag: 'Friend' },
+            { id: 'finny-surf', name: 'Surfboard', emoji: '🏄‍♂️', cat: 'finny', tag: 'Surf Time' },
+            { id: 'finny-beach', name: 'Beach Day', emoji: '🏖️', cat: 'finny', tag: 'Beach' },
+            // Gumball & Family (emoji-style fan stickers)
+            { id: 'gumball', name: 'Gumball', emoji: '🐱', cat: 'gumball', tag: 'Blue Cat' },
+            { id: 'gumball-darwin', name: 'Darwin', emoji: '🐠', cat: 'gumball', tag: 'Goldfish Pal' },
+            { id: 'gumball-anais', name: 'Anais', emoji: '🐰', cat: 'gumball', tag: 'Little Sister' },
+            { id: 'gumball-nicole', name: 'Nicole', emoji: '🐈', cat: 'gumball', tag: 'Super Mom' },
+            { id: 'gumball-richard', name: 'Richard', emoji: '😸', cat: 'gumball', tag: 'Fun Dad' },
+            { id: 'gumball-penny', name: 'Penny', emoji: '🦌', cat: 'gumball', tag: 'Antler Friend' },
+            { id: 'gumball-rob', name: 'Rob', emoji: '👁️', cat: 'gumball', tag: 'One Eye' },
+            { id: 'gumball-school', name: 'Elmore School', emoji: '🏫', cat: 'gumball', tag: 'School' },
+            // We Bare Bears (emoji-style fan stickers)
+            { id: 'bears-grizz', name: 'Grizz', emoji: '🐻', cat: 'barebears', tag: 'Big Brother' },
+            { id: 'bears-panda', name: 'Panda', emoji: '🐼', cat: 'barebears', tag: 'Middle Brother' },
+            { id: 'bears-ice', name: 'Ice Bear', emoji: '🐻‍❄️', cat: 'barebears', tag: 'Little Brother' },
+            { id: 'bears-chloe', name: 'Chloe', emoji: '👧', cat: 'barebears', tag: 'Kid Friend' },
+            { id: 'bears-charlie', name: 'Charlie', emoji: '🦍', cat: 'barebears', tag: 'Bigfoot Pal' },
+            { id: 'bears-nomnom', name: 'Nom Nom', emoji: '🐨', cat: 'barebears', tag: 'Koala Star' },
+            { id: 'bears-truck', name: 'Food Truck', emoji: '🚚', cat: 'barebears', tag: 'Snacks' },
+            { id: 'bears-tabes', name: 'Ranger Tabes', emoji: '👮', cat: 'barebears', tag: 'Ranger' }
+        ];
+
+        const CATEGORIES = [
+            { id: 'all', name: 'All' },
+            { id: 'favs', name: '⭐ Favs' },
+            { id: 'mane6', name: 'Mane 6' },
+            { id: 'royalty', name: 'Royalty' },
+            { id: 'friends', name: 'Friends' },
+            { id: 'cmc', name: 'CMC & Pets' },
+            { id: 'carebears', name: 'Care Bears' },
+            { id: 'peppa', name: '🐷 Peppa' },
+            { id: 'bluey', name: '🐶 Bluey' },
+            { id: 'babyshark', name: '🦈 Baby Shark' },
+            { id: 'finny', name: '🏄 Finny' },
+            { id: 'gumball', name: '🐱 Gumball' },
+            { id: 'barebears', name: '🐻 Bare Bears' },
+        ];
+
+        /* Favorites (persisted) */
+        function getFavs() {
+            try {
+                const raw = localStorage.getItem('glory_favs');
+                const arr = raw ? JSON.parse(raw) : [];
+                return Array.isArray(arr) ? arr : [];
+            } catch (e) { return []; }
+        }
+        function isFav(id) { return getFavs().includes(id); }
+        function toggleFav(id) {
+            let favs = getFavs();
+            if (favs.includes(id)) favs = favs.filter(f => f !== id);
+            else favs.push(id);
+            try { localStorage.setItem('glory_favs', JSON.stringify(favs)); } catch (e) {}
+            return favs.includes(id);
+        }
+
+        const EMOJIS = [
+            '✨', '⭐', '🌟', '💫', '⚡', '🌈', '🌙', '☀️', '☁️',
+            '💖', '💕', '💗', '❤️', '💜', '💙', '🤍',
+            '🌸', '🌺', '🌻', '🌹', '🍀', '🍓', '🍎', '🧁', '🍰', '🍬',
+            '👑', '🎀', '💎', '🎈', '🎵', '📖', '🦋', '🪄', '🧸', '🎨'
+        ];
+
+        /* ==========================================================
+           2. SOUND SYNTHESIS ENGINE (Web Audio API)
+           ========================================================== */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = localStorage.getItem('glory_sound_enabled') !== 'false';
+                this.updateButton();
+            }
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+            toggle() {
+                this.enabled = !this.enabled;
+                localStorage.setItem('glory_sound_enabled', this.enabled ? 'true' : 'false');
+                this.updateButton();
+                if (this.enabled) {
+                    this.play('sparkle');
+                    showToast('🔊 Sound turned ON', '🎵');
+                } else {
+                    showToast('🔇 Sound turned OFF', '🔇');
+                }
+            }
+            updateButton() {
+                const btn = document.getElementById('soundToggle');
+                if (btn) btn.textContent = this.enabled ? '🔊' : '🔇';
+            }
+            play(type) {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    if (type === 'pop') {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(380, now);
+                        osc.frequency.exponentialRampToValueAtTime(840, now + 0.08);
+                        gain.gain.setValueAtTime(0.3, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.09);
+                    } else if (type === 'sparkle') {
+                        [1046.5, 1318.5, 1567.98, 2093.0].forEach((freq, idx) => {
+                            const osc = this.ctx.createOscillator();
+                            const gain = this.ctx.createGain();
+                            osc.type = 'triangle';
+                            const t = now + idx * 0.05;
+                            osc.frequency.setValueAtTime(freq, t);
+                            gain.gain.setValueAtTime(0.18, t);
+                            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+                            osc.connect(gain);
+                            gain.connect(this.ctx.destination);
+                            osc.start(t);
+                            osc.stop(t + 0.17);
+                        });
+                    } else if (type === 'boing') {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(320, now);
+                        osc.frequency.exponentialRampToValueAtTime(650, now + 0.11);
+                        osc.frequency.exponentialRampToValueAtTime(400, now + 0.22);
+                        gain.gain.setValueAtTime(0.25, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.23);
+                    } else if (type === 'whoosh') {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(400, now);
+                        osc.frequency.exponentialRampToValueAtTime(90, now + 0.14);
+                        gain.gain.setValueAtTime(0.14, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.15);
+                    } else if (type === 'camera') {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(1200, now);
+                        gain.gain.setValueAtTime(0.2, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.06);
+                    }
+                } catch (e) {
+                    console.warn('Audio playback error', e);
+                }
+            }
+        }
+        const sfx = new SoundFX();
+        document.getElementById('soundToggle').addEventListener('click', () => sfx.toggle());
+
+        /* ==========================================================
+           3. AMBIENT PARTICLE ENGINE
+           ========================================================== */
+        const pCanvas = document.getElementById('particleCanvas');
+        const pCtx = pCanvas.getContext('2d');
+        let particles = [];
+        let currentFx = 'sparkles';
+        const fxSymbols = {
+            sparkles: ['✨', '⭐', '💫', '🌸'],
+            butterflies: ['🦋', '🌸', '✨'],
+            hearts: ['💖', '💕', '💗', '❤️', '💜'],
+            stars: ['⭐', '🌟', '✨', '💫'],
+            none: []
+        };
+
+        function resizeParticleCanvas() {
+            const canvasEl = document.getElementById('canvas');
+            const rect = canvasEl.getBoundingClientRect();
+            pCanvas.width = rect.width;
+            pCanvas.height = rect.height;
+        }
+        window.addEventListener('resize', resizeParticleCanvas);
+        resizeParticleCanvas();
+
+        function createParticle() {
+            const symbols = fxSymbols[currentFx];
+            if (!symbols || symbols.length === 0) return null;
+            return {
+                char: symbols[Math.floor(Math.random() * symbols.length)],
+                x: Math.random() * pCanvas.width,
+                y: pCanvas.height + 20,
+                vx: (Math.random() - 0.5) * 1.2,
+                vy: -(1 + Math.random() * 1.5),
+                size: 14 + Math.random() * 18,
+                alpha: 0.1 + Math.random() * 0.7,
+                rot: Math.random() * Math.PI * 2,
+                vrot: (Math.random() - 0.5) * 0.04,
+                wobble: Math.random() * Math.PI * 2,
+                wobbleSpeed: 0.03 + Math.random() * 0.03
+            };
+        }
+
+        function initParticles() {
+            particles = [];
+            if (currentFx === 'none') return;
+            const count = Math.min(25, Math.floor(pCanvas.width / 45));
+            for (let i = 0; i < count; i++) {
+                const p = createParticle();
+                if (p) {
+                    p.y = Math.random() * pCanvas.height;
+                    particles.push(p);
+                }
+            }
+        }
+        initParticles();
+
+        function renderParticles() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            if (currentFx !== 'none') {
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.wobble += p.wobbleSpeed;
+                    p.x += p.vx + Math.sin(p.wobble) * 0.8;
+                    p.y += p.vy;
+                    p.rot += p.vrot;
+
+                    pCtx.save();
+                    pCtx.globalAlpha = p.alpha;
+                    pCtx.translate(p.x, p.y);
+                    pCtx.rotate(p.rot);
+                    pCtx.font = `${p.size}px sans-serif`;
+                    pCtx.textAlign = 'center';
+                    pCtx.textBaseline = 'middle';
+                    pCtx.fillText(p.char, 0, 0);
+                    pCtx.restore();
+
+                    if (p.y < -30 || p.x < -30 || p.x > pCanvas.width + 30) {
+                        particles[i] = createParticle() || p;
+                    }
+                }
+            }
+            requestAnimationFrame(renderParticles);
+        }
+        requestAnimationFrame(renderParticles);
+
+        document.querySelectorAll('.fx-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.fx-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFx = btn.dataset.fx;
+                initParticles();
+                sfx.play('sparkle');
+                showToast(`Ambient Magic: ${btn.textContent}`, '✨');
+            });
+        });
+
+        /* Sparkle burst at specific coordinates */
+        function triggerSparkleBurst(x, y) {
+            const symbols = ['✨', '⭐', '💖', '🌟', '🌸', '💫'];
+            const count = 12;
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.4;
+                const dist = 50 + Math.random() * 80;
+                const dx = Math.cos(angle) * dist;
+                const dy = Math.sin(angle) * dist;
+                const rot = (Math.random() - 0.5) * 360;
+
+                const p = document.createElement('div');
+                p.className = 'burst-particle';
+                p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                p.style.setProperty('--dx', `${dx}px`);
+                p.style.setProperty('--dy', `${dy}px`);
+                p.style.setProperty('--rot', `${rot}deg`);
+                document.body.appendChild(p);
+
+                setTimeout(() => p.remove(), 750);
+            }
+        }
+
+        /* ==========================================================
+           4. SIDEBAR RENDERING & FILTERING
+           ========================================================== */
         const canvas = document.getElementById('canvas');
         const canvasGradient = document.getElementById('canvasGradient');
         const sidebar = document.getElementById('sidebar');
-        let activeSticker = null;
-        let offsetX, offsetY;
-        let selectedSticker = null;
+        let currentBg = 'gradient';
 
+        // Toggle Sidebar
         document.getElementById('toggleSidebar').addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
+            setTimeout(resizeParticleCanvas, 320);
         });
 
-        const bgStyles = {
-            gradient: { show: true, bg: '' },
-            mainstreet: { show: false, bg: "url('ponyville-mainstreet.jpg')" },
-            library: { show: false, bg: "url('twilight-library.jpg')" },
-            abbey: { show: false, bg: "url('abbey-road.webp')" },
-            carealot: { show: false, bg: "url('carealot.jpg')" }
-        };
+        // Render Backgrounds Grid
+        const bgGrid = document.getElementById('bgGrid');
+        BACKGROUNDS.forEach(bg => {
+            const card = document.createElement('div');
+            card.className = `bg-card ${bg.id === 'gradient' ? 'active' : ''}`;
+            card.dataset.bg = bg.id;
 
-        document.querySelectorAll('.bg-card').forEach(card => {
+            if (bg.type === 'gradient') {
+                card.innerHTML = `<div class="gradient-preview"></div><span class="bg-label">${bg.name}</span>`;
+            } else {
+                card.innerHTML = `<img src="${bg.file}" alt="${bg.name}"><span class="bg-label">${bg.name}</span>`;
+            }
+
             card.addEventListener('click', () => {
-                document.querySelectorAll('.bg-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                const style = bgStyles[card.dataset.bg];
-                if (style.show) {
-                    canvasGradient.style.display = 'block';
-                    canvas.style.background = '';
+                selectBackground(bg.id);
+            });
+            bgGrid.appendChild(card);
+        });
+
+        function selectBackground(bgId, saveHistoryFlag = true) {
+            currentBg = bgId;
+            document.querySelectorAll('.bg-card').forEach(c => {
+                c.classList.toggle('active', c.dataset.bg === bgId);
+            });
+
+            const bg = BACKGROUNDS.find(b => b.id === bgId);
+            if (!bg || bg.type === 'gradient') {
+                canvasGradient.style.display = 'block';
+                canvas.style.backgroundImage = '';
+            } else {
+                canvasGradient.style.display = 'none';
+                canvas.style.backgroundImage = `url('${bg.file}')`;
+            }
+
+            sfx.play('sparkle');
+            if (saveHistoryFlag) pushHistory();
+        }
+
+        // Render Characters Shelf (supports image + emoji stickers, favorites, live counts)
+        const characterShelf = document.getElementById('characterShelf');
+        const catPillsEl = document.getElementById('catPills');
+        let activeCategory = 'all';
+
+        function catCount(catId) {
+            if (catId === 'all') return CHARACTERS.length;
+            if (catId === 'favs') return getFavs().length;
+            return CHARACTERS.filter(c => c.cat === catId).length;
+        }
+
+        function renderCatPills() {
+            catPillsEl.innerHTML = '';
+            CATEGORIES.forEach(cat => {
+                const pill = document.createElement('button');
+                pill.className = `cat-pill${cat.id === activeCategory ? ' active' : ''}`;
+                pill.dataset.cat = cat.id;
+                pill.textContent = `${cat.name} (${catCount(cat.id)})`;
+                pill.addEventListener('click', () => {
+                    activeCategory = cat.id;
+                    catPillsEl.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    renderCharacters(activeCategory, charSearch.value);
+                });
+                catPillsEl.appendChild(pill);
+            });
+            const badge = document.getElementById('charCount');
+            if (badge) badge.textContent = CHARACTERS.length;
+        }
+
+        function spawnSticker(char) {
+            const rect = canvas.getBoundingClientRect();
+            const opts = {
+                name: char.name,
+                x: rect.width / 2 - 100 + (Math.random() - 0.5) * 100,
+                y: rect.height / 2 - 110 + (Math.random() - 0.5) * 80
+            };
+            if (char.src) {
+                opts.src = char.src;
+                opts.width = 220;
+                if (char.emoji) opts.fallback = char.emoji;
+            } else {
+                opts.emoji = char.emoji;
+                opts.size = 96;
+            }
+            const sticker = addSticker(opts);
+            const sRect = sticker.getBoundingClientRect();
+            triggerSparkleBurst(sRect.left + sRect.width / 2, sRect.top + sRect.height / 2);
+            sfx.play('pop');
+            pushHistory();
+        }
+
+        function renderCharacters(filterCategory = 'all', filterSearch = '') {
+            characterShelf.innerHTML = '';
+            const searchLower = filterSearch.trim().toLowerCase();
+            const favs = getFavs();
+
+            const filtered = CHARACTERS.filter(char => {
+                const matchCat = filterCategory === 'all'
+                    || (filterCategory === 'favs' ? favs.includes(char.id) : char.cat === filterCategory);
+                const matchSearch = !searchLower
+                    || char.name.toLowerCase().includes(searchLower)
+                    || (char.tag && char.tag.toLowerCase().includes(searchLower));
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'empty-shelf';
+                empty.textContent = filterCategory === 'favs' && !searchLower
+                    ? 'No favorites yet — tap the ☆ on any sticker to save it here!'
+                    : 'No stickers found — try another search!';
+                characterShelf.appendChild(empty);
+                return;
+            }
+
+            // Cap initial DOM nodes for speed; search narrows further
+            const visible = filtered.slice(0, 220);
+            visible.forEach(char => {
+                const card = document.createElement('div');
+                card.className = 'char-card';
+                card.title = `${char.name} (${char.tag || char.cat})`;
+                card.draggable = true;
+                const fav = favs.includes(char.id);
+
+                if (char.src) {
+                    card.innerHTML = `
+                        <button class="fav-star${fav ? ' active' : ''}" title="Favorite">★</button>
+                        <div class="char-img-wrap">
+                            <img src="${char.src}" alt="${char.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=char-emoji>${char.emoji || '✨'}</span>';">
+                        </div>
+                        <span class="char-name">${char.name}</span>
+                    `;
                 } else {
-                    canvasGradient.style.display = 'none';
-                    canvas.style.background = style.bg;
-                    canvas.style.backgroundSize = 'cover';
-                    canvas.style.backgroundPosition = 'center';
+                    card.innerHTML = `
+                        <button class="fav-star${fav ? ' active' : ''}" title="Favorite">★</button>
+                        <div class="char-img-wrap">
+                            <span class="char-emoji">${char.emoji}</span>
+                        </div>
+                        <span class="char-name">${char.name}</span>
+                    `;
                 }
+
+                card.querySelector('.fav-star').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const nowFav = toggleFav(char.id);
+                    e.currentTarget.classList.toggle('active', nowFav);
+                    renderCatPills();
+                    if (activeCategory === 'favs') renderCharacters(activeCategory, charSearch.value);
+                    showToast(nowFav ? `⭐ ${char.name} saved to Favorites!` : `☆ ${char.name} removed`, '⭐');
+                });
+
+                // Click to add
+                card.addEventListener('click', () => spawnSticker(char));
+
+                // Drag and drop from shelf
+                card.addEventListener('dragstart', (e) => {
+                    const payload = { name: char.name, width: 220, size: 96 };
+                    if (char.src) {
+                        payload.src = char.src;
+                        if (char.emoji) payload.fallback = char.emoji;
+                    } else payload.emoji = char.emoji;
+                    e.dataTransfer.setData('application/json', JSON.stringify(payload));
+                });
+
+                characterShelf.appendChild(card);
             });
+        }
+        renderCatPills();
+        renderCharacters();
+
+        // File-art auto-upgrade: drop a transparent PNG named stickers/<id>.png
+        // next to index.html (see stickers/README.md) and it replaces the emoji
+        // automatically on next load. Missing files keep the emoji — no breakage.
+        (function upgradeFileArt() {
+            const candidates = CHARACTERS.filter(c => !c.src && c.emoji);
+            if (!candidates.length) return;
+            let pending = candidates.length;
+            let upgraded = false;
+            const settled = () => {
+                if (--pending === 0 && upgraded) {
+                    const q = document.getElementById('charSearch');
+                    renderCatPills();
+                    renderCharacters(activeCategory, q ? q.value : '');
+                    showToast('🖼️ New art found — stickers upgraded!', '✨');
+                }
+            };
+            candidates.forEach(char => {
+                const test = new Image();
+                test.onload = () => {
+                    char.src = `stickers/${char.id}.png`;
+                    upgraded = true;
+                    settled();
+                };
+                test.onerror = settled;
+                test.src = `stickers/${char.id}.png`;
+            });
+        })();
+
+        // Surprise button: spawn a random sticker
+        document.getElementById('surpriseBtn').addEventListener('click', () => {
+            const char = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+            spawnSticker(char);
+            showToast(`🎲 It's ${char.name}!`, char.emoji || '🎲');
         });
 
-        document.querySelectorAll('.sticker-thumb').forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                addSticker(thumb.dataset.src, thumb.dataset.emoji, thumb.dataset.name || 'sticker');
-            });
+        // Search Filter
+        const charSearch = document.getElementById('charSearch');
+        const searchClear = document.getElementById('searchClear');
+        charSearch.addEventListener('input', () => {
+            searchClear.style.display = charSearch.value ? 'block' : 'none';
+            renderCharacters(activeCategory, charSearch.value);
+        });
+        searchClear.addEventListener('click', () => {
+            charSearch.value = '';
+            searchClear.style.display = 'none';
+            renderCharacters(activeCategory, '');
         });
 
-        function addSticker(src, emoji, name, x, y, size) {
+        // Render Emoji Shelf
+        const emojiShelf = document.getElementById('emojiShelf');
+        EMOJIS.forEach(emoji => {
+            const thumb = document.createElement('div');
+            thumb.className = 'sticker-thumb';
+            thumb.draggable = true;
+            thumb.innerHTML = `<span class="emoji-sticker">${emoji}</span>`;
+
+            thumb.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const spawnX = rect.width / 2 - 40 + (Math.random() - 0.5) * 120;
+                const spawnY = rect.height / 2 - 40 + (Math.random() - 0.5) * 100;
+                const sticker = addSticker({
+                    emoji: emoji,
+                    x: spawnX,
+                    y: spawnY,
+                    size: 72
+                });
+                const sRect = sticker.getBoundingClientRect();
+                triggerSparkleBurst(sRect.left + sRect.width / 2, sRect.top + sRect.height / 2);
+                sfx.play('pop');
+                pushHistory();
+            });
+
+            thumb.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('application/json', JSON.stringify({
+                    emoji: emoji,
+                    size: 72
+                }));
+            });
+
+            emojiShelf.appendChild(thumb);
+        });
+
+        // Add Speech Bubble Button
+        document.getElementById('addSpeechBubble').addEventListener('click', () => {
+            const rect = canvas.getBoundingClientRect();
+            const spawnX = rect.width / 2 - 90;
+            const spawnY = rect.height / 2 - 40;
+            const sticker = addSticker({
+                isSpeech: true,
+                text: 'Yay! Having fun in Equestria! ✨',
+                x: spawnX,
+                y: spawnY
+            });
+            const sRect = sticker.getBoundingClientRect();
+            triggerSparkleBurst(sRect.left + sRect.width / 2, sRect.top + sRect.height / 2);
+            sfx.play('pop');
+            pushHistory();
+        });
+
+        // Canvas Drag & Drop Listeners
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const dataStr = e.dataTransfer.getData('application/json');
+            if (!dataStr) return;
+            try {
+                const data = JSON.parse(dataStr);
+                const rect = canvas.getBoundingClientRect();
+                const dropX = e.clientX - rect.left - (data.width ? data.width / 2 : 36);
+                const dropY = e.clientY - rect.top - (data.width ? data.width / 2 : 36);
+
+                const sticker = addSticker({
+                    src: data.src,
+                    name: data.name,
+                    emoji: data.emoji,
+                    fallback: data.fallback,
+                    width: data.width,
+                    size: data.size,
+                    x: dropX,
+                    y: dropY
+                });
+                triggerSparkleBurst(e.clientX, e.clientY);
+                sfx.play('pop');
+                pushHistory();
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        /* ==========================================================
+           5. STICKER MANAGEMENT & MANIPULATION
+           ========================================================== */
+        let selectedSticker = null;
+        let highestZ = 20;
+
+        function addSticker(options) {
             const el = document.createElement('div');
             el.className = 'sticker';
 
-            if (src) {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = name;
-                img.draggable = false;
-                img.style.width = (size || 180) + 'px';
-                el.appendChild(img);
-            } else if (emoji) {
-                el.innerHTML = `<span style="font-size: ${size || 72}px; line-height: 1;">${emoji}</span>`;
+            // Attributes
+            let rotation = options.rotation || 0;
+            let flipX = options.flipX !== undefined ? options.flipX : 1;
+            let zIndex = options.zIndex || ++highestZ;
+
+            el.dataset.rotation = rotation;
+            el.dataset.flipX = flipX;
+            el.style.zIndex = zIndex;
+
+            // Content
+            if (options.src) {
+                el.dataset.type = 'image';
+                el.dataset.src = options.src;
+                el.dataset.name = options.name || 'Pony';
+                if (options.fallback) el.dataset.fallback = options.fallback;
+                const width = options.width || 200;
+                el.dataset.width = width;
+                el.style.width = width + 'px';
+
+                el.innerHTML = `
+                    <div class="sticker-content">
+                        <img src="${options.src}" alt="${options.name || 'sticker'}" draggable="false">
+                    </div>
+                `;
+
+                // If the art file is missing, swap to the emoji fallback (no broken image)
+                const imgEl = el.querySelector('img');
+                if (imgEl && options.fallback) {
+                    imgEl.addEventListener('error', () => {
+                        el.dataset.type = 'emoji';
+                        el.dataset.emoji = options.fallback;
+                        el.dataset.size = 96;
+                        delete el.dataset.src;
+                        const content = el.querySelector('.sticker-content');
+                        if (content) {
+                            content.classList.add('emoji-content');
+                            content.style.cssText = 'font-size:96px;line-height:1;text-align:center;';
+                            content.textContent = options.fallback;
+                        }
+                    });
+                }
+            } else if (options.emoji) {
+                el.dataset.type = 'emoji';
+                el.dataset.emoji = options.emoji;
+                const size = options.size || 72;
+                el.dataset.size = size;
+
+                el.innerHTML = `
+                    <div class="sticker-content emoji-content" style="font-size: ${size}px; line-height: 1; text-align: center;">
+                        ${options.emoji}
+                    </div>
+                `;
+            } else if (options.isSpeech) {
+                el.dataset.type = 'speech';
+                el.innerHTML = `
+                    <div class="speech-bubble" contenteditable="true" spellcheck="false">
+                        ${options.text || 'Hello! ✨'}
+                        <div class="speech-bubble-tail"></div>
+                    </div>
+                `;
             }
 
-            const del = document.createElement('button');
-            del.className = 'delete-btn';
-            del.textContent = '×';
-            del.addEventListener('click', (e) => {
+            // Controls on selected sticker
+            const delBtn = document.createElement('button');
+            delBtn.className = 'sticker-ctrl del';
+            delBtn.innerHTML = '✕';
+            delBtn.title = 'Delete';
+            delBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                el.remove();
-                if (selectedSticker === el) selectedSticker = null;
-                updateCount();
+                deleteSticker(el);
             });
-            el.appendChild(del);
+            el.appendChild(delBtn);
 
+            const flipBtn = document.createElement('button');
+            flipBtn.className = 'sticker-ctrl flip';
+            flipBtn.innerHTML = '↔';
+            flipBtn.title = 'Flip Horizontal';
+            flipBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFlip(el);
+            });
+            el.appendChild(flipBtn);
+
+            const rotBtn = document.createElement('button');
+            rotBtn.className = 'sticker-ctrl rotate';
+            rotBtn.innerHTML = '🔄';
+            rotBtn.title = 'Rotate 45°';
+            rotBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                rotateSticker(el, 45);
+            });
+            el.appendChild(rotBtn);
+
+            const dupBtn = document.createElement('button');
+            dupBtn.className = 'sticker-ctrl dup';
+            dupBtn.innerHTML = '⧉';
+            dupBtn.title = 'Duplicate';
+            dupBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                duplicateSticker(el);
+            });
+            el.appendChild(dupBtn);
+
+            const resizeHandle = document.createElement('div');
+            resizeHandle.className = 'sticker-ctrl resize';
+            resizeHandle.innerHTML = '⤡';
+            resizeHandle.title = 'Drag to Resize';
+            el.appendChild(resizeHandle);
+
+            // Positioning
             const canvasRect = canvas.getBoundingClientRect();
-            el.style.left = (x ?? (Math.random() * (canvasRect.width - (size || 180)))) + 'px';
-            el.style.top = (y ?? (Math.random() * (canvasRect.height - (size || 180)))) + 'px';
+            const posX = options.x !== undefined ? options.x : (Math.random() * (canvasRect.width - 200) + 20);
+            const posY = options.y !== undefined ? options.y : (Math.random() * (canvasRect.height - 200) + 20);
+            el.style.left = `${posX}px`;
+            el.style.top = `${posY}px`;
 
+            updateStickerTransform(el);
+
+            // Double Click Fun
+            el.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                sfx.play('boing');
+                const r = el.getBoundingClientRect();
+                triggerSparkleBurst(r.left + r.width / 2, r.top + r.height / 2);
+                el.animate([
+                    { transform: `${el.style.transform} scale(1)` },
+                    { transform: `${el.style.transform} scale(1.15) rotate(-4deg)` },
+                    { transform: `${el.style.transform} scale(1)` }
+                ], { duration: 350, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+            });
+
+            // Pointer Drag Logic
+            let isDragging = false;
+            let isResizing = false;
+            let startPointerX, startPointerY;
+            let startLeft, startTop;
+            let startWidth, startSize;
+
+            el.addEventListener('pointerdown', (e) => {
+                if (e.target.classList.contains('sticker-ctrl')) {
+                    if (e.target.classList.contains('resize')) {
+                        isResizing = true;
+                        startPointerX = e.clientX;
+                        startPointerY = e.clientY;
+                        startWidth = el.offsetWidth;
+                        const emojiEl = el.querySelector('.emoji-content');
+                        if (emojiEl) startSize = parseFloat(el.dataset.size || 72);
+                        el.setPointerCapture(e.pointerId);
+                        selectSticker(el);
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                    return;
+                }
+
+                if (e.target.classList.contains('speech-bubble') && e.target === document.activeElement) {
+                    selectSticker(el);
+                    return;
+                }
+
+                isDragging = true;
+                startPointerX = e.clientX;
+                startPointerY = e.clientY;
+                startLeft = parseFloat(el.style.left);
+                startTop = parseFloat(el.style.top);
+                el.classList.add('dragging');
+                el.setPointerCapture(e.pointerId);
+                selectSticker(el);
+                e.stopPropagation();
+                e.preventDefault();
+            });
+
+            el.addEventListener('pointermove', (e) => {
+                if (isDragging) {
+                    const dx = e.clientX - startPointerX;
+                    const dy = e.clientY - startPointerY;
+                    el.style.left = `${startLeft + dx}px`;
+                    el.style.top = `${startTop + dy}px`;
+                } else if (isResizing) {
+                    const dx = e.clientX - startPointerX;
+                    if (el.dataset.type === 'image') {
+                        const newWidth = Math.max(50, Math.min(650, startWidth + dx));
+                        el.style.width = `${newWidth}px`;
+                        el.dataset.width = newWidth;
+                    } else if (el.dataset.type === 'emoji') {
+                        const emojiEl = el.querySelector('.emoji-content');
+                        const newSize = Math.max(24, Math.min(220, startSize + dx * 0.5));
+                        emojiEl.style.fontSize = `${newSize}px`;
+                        el.dataset.size = newSize;
+                    }
+                }
+            });
+
+            const onPointerEnd = (e) => {
+                if (isDragging || isResizing) {
+                    el.classList.remove('dragging');
+                    isDragging = false;
+                    isResizing = false;
+                    try { el.releasePointerCapture(e.pointerId); } catch (err) {}
+                    pushHistory();
+                }
+            };
+            el.addEventListener('pointerup', onPointerEnd);
+            el.addEventListener('pointercancel', onPointerEnd);
+
+            // Selection
             el.addEventListener('click', (e) => {
                 e.stopPropagation();
                 selectSticker(el);
             });
 
-            el.addEventListener('pointerdown', (e) => {
-                if (e.target.classList.contains('delete-btn')) return;
-                activeSticker = el;
-                const rect = el.getBoundingClientRect();
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-                el.classList.add('dragging');
-                el.setPointerCapture(e.pointerId);
-                selectSticker(el);
-                e.preventDefault();
-            });
-
             canvas.appendChild(el);
-            updateCount();
+            selectSticker(el);
+            updateStickerCount();
             return el;
         }
 
         function selectSticker(el) {
+            if (selectedSticker === el) return;
             if (selectedSticker) selectedSticker.classList.remove('selected');
             selectedSticker = el;
-            el.classList.add('selected');
+            if (selectedSticker) {
+                selectedSticker.classList.add('selected');
+                updateToolbarButtons();
+            }
         }
 
-        document.addEventListener('pointermove', (e) => {
-            if (!activeSticker) return;
-            const canvasRect = canvas.getBoundingClientRect();
-            activeSticker.style.left = (e.clientX - canvasRect.left - offsetX) + 'px';
-            activeSticker.style.top = (e.clientY - canvasRect.top - offsetY) + 'px';
-        });
-
-        document.addEventListener('pointerup', () => {
-            if (activeSticker) {
-                activeSticker.classList.remove('dragging');
-                activeSticker = null;
-            }
-        });
-
-        canvas.addEventListener('click', () => {
+        function deselectAll() {
             if (selectedSticker) {
                 selectedSticker.classList.remove('selected');
                 selectedSticker = null;
+                updateToolbarButtons();
             }
-        });
-
-        document.getElementById('fullscreen').addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        });
-
-        document.getElementById('clearAll').addEventListener('click', () => {
-            if (canvas.querySelectorAll('.sticker').length === 0) return;
-            canvas.querySelectorAll('.sticker').forEach(s => s.remove());
-            selectedSticker = null;
-            updateCount();
-        });
-
-        document.getElementById('duplicate').addEventListener('click', () => {
-            if (!selectedSticker) return;
-            const img = selectedSticker.querySelector('img');
-            const emoji = selectedSticker.querySelector('span');
-            const l = parseInt(selectedSticker.style.left) + 30;
-            const t = parseInt(selectedSticker.style.top) + 30;
-            if (img) addSticker(img.src, null, img.alt, l, t, img.offsetWidth);
-            else if (emoji) addSticker(null, emoji.textContent, 'emoji', l, t, emoji.offsetWidth);
-        });
-
-        document.getElementById('sizeUp').addEventListener('click', () => {
-            if (!selectedSticker) return;
-            const img = selectedSticker.querySelector('img');
-            const emoji = selectedSticker.querySelector('span');
-            if (img) img.style.width = Math.min(img.offsetWidth + 40, 500) + 'px';
-            if (emoji) emoji.style.fontSize = Math.min(parseInt(emoji.style.fontSize) + 20, 200) + 'px';
-        });
-
-        document.getElementById('sizeDown').addEventListener('click', () => {
-            if (!selectedSticker) return;
-            const img = selectedSticker.querySelector('img');
-            const emoji = selectedSticker.querySelector('span');
-            if (img) img.style.width = Math.max(img.offsetWidth - 40, 40) + 'px';
-            if (emoji) emoji.style.fontSize = Math.max(parseInt(emoji.style.fontSize) - 20, 20) + 'px';
-        });
-
-        function updateCount() {
-            document.getElementById('count').textContent = canvas.querySelectorAll('.sticker').length;
         }
 
-        setTimeout(() => {
-            addSticker('fluttershy-smirk.png', null, 'Fluttershy', 120, 100, 220);
-            addSticker('twilight.png', null, 'Twilight Sparkle', null, null, 220);
-        }, 100);
+        canvas.addEventListener('click', (e) => {
+            if (e.target === canvas || e.target === canvasGradient || e.target === pCanvas) {
+                deselectAll();
+            }
+        });
+
+        function updateStickerTransform(el) {
+            const rot = el.dataset.rotation || 0;
+            const flip = el.dataset.flipX || 1;
+            el.style.transform = `rotate(${rot}deg) scaleX(${flip})`;
+        }
+
+        function toggleFlip(el) {
+            if (!el) return;
+            const currentFlip = parseFloat(el.dataset.flipX || 1);
+            el.dataset.flipX = currentFlip === 1 ? -1 : 1;
+            updateStickerTransform(el);
+            sfx.play('boing');
+            pushHistory();
+        }
+
+        function rotateSticker(el, degDelta) {
+            if (!el) return;
+            let currentRot = parseFloat(el.dataset.rotation || 0);
+            currentRot = (currentRot + degDelta) % 360;
+            el.dataset.rotation = currentRot;
+            updateStickerTransform(el);
+            sfx.play('pop');
+            pushHistory();
+        }
+
+        function resizeSticker(el, delta) {
+            if (!el) return;
+            if (el.dataset.type === 'image') {
+                const currentW = parseFloat(el.dataset.width || el.offsetWidth);
+                const newW = Math.max(50, Math.min(650, currentW + delta));
+                el.style.width = `${newW}px`;
+                el.dataset.width = newW;
+            } else if (el.dataset.type === 'emoji') {
+                const emojiEl = el.querySelector('.emoji-content');
+                const currentS = parseFloat(el.dataset.size || 72);
+                const newS = Math.max(24, Math.min(240, currentS + delta * 0.4));
+                emojiEl.style.fontSize = `${newS}px`;
+                el.dataset.size = newS;
+            } else if (el.dataset.type === 'speech') {
+                const bubble = el.querySelector('.speech-bubble');
+                const currentF = parseFloat(window.getComputedStyle(bubble).fontSize);
+                bubble.style.fontSize = `${Math.max(12, Math.min(32, currentF + (delta > 0 ? 2 : -2)))}px`;
+            }
+            sfx.play('pop');
+            pushHistory();
+        }
+
+        function deleteSticker(el) {
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            triggerSparkleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            el.remove();
+            if (selectedSticker === el) {
+                selectedSticker = null;
+                updateToolbarButtons();
+            }
+            sfx.play('whoosh');
+            updateStickerCount();
+            pushHistory();
+        }
+
+        function duplicateSticker(el) {
+            if (!el) return;
+            const left = parseFloat(el.style.left) + 35;
+            const top = parseFloat(el.style.top) + 35;
+            let newSticker;
+
+            if (el.dataset.type === 'image') {
+                newSticker = addSticker({
+                    src: el.dataset.src,
+                    name: el.dataset.name,
+                    fallback: el.dataset.fallback,
+                    width: parseFloat(el.dataset.width || el.offsetWidth),
+                    rotation: parseFloat(el.dataset.rotation || 0),
+                    flipX: parseFloat(el.dataset.flipX || 1),
+                    x: left,
+                    y: top
+                });
+            } else if (el.dataset.type === 'emoji') {
+                newSticker = addSticker({
+                    emoji: el.dataset.emoji,
+                    size: parseFloat(el.dataset.size || 72),
+                    rotation: parseFloat(el.dataset.rotation || 0),
+                    flipX: parseFloat(el.dataset.flipX || 1),
+                    x: left,
+                    y: top
+                });
+            } else if (el.dataset.type === 'speech') {
+                const text = el.querySelector('.speech-bubble').innerText;
+                newSticker = addSticker({
+                    isSpeech: true,
+                    text: text,
+                    rotation: parseFloat(el.dataset.rotation || 0),
+                    flipX: parseFloat(el.dataset.flipX || 1),
+                    x: left,
+                    y: top
+                });
+            }
+            sfx.play('boing');
+            pushHistory();
+        }
+
+        function changeLayer(el, direction) {
+            if (!el) return;
+            if (direction === 'up') {
+                el.style.zIndex = ++highestZ;
+            } else {
+                const stickers = Array.from(canvas.querySelectorAll('.sticker'));
+                let lowestZ = 100;
+                stickers.forEach(s => {
+                    const z = parseInt(s.style.zIndex) || 10;
+                    if (z < lowestZ) lowestZ = z;
+                });
+                el.style.zIndex = Math.max(1, lowestZ - 1);
+            }
+            sfx.play('pop');
+            pushHistory();
+        }
+
+        function updateStickerCount() {
+            const count = canvas.querySelectorAll('.sticker').length;
+            document.getElementById('stickerCount').textContent = `${count} ${count === 1 ? 'item' : 'items'}`;
+        }
+
+        function updateToolbarButtons() {
+            const hasSel = selectedSticker !== null;
+            document.getElementById('flipBtn').disabled = !hasSel;
+            document.getElementById('rotateBtn').disabled = !hasSel;
+            document.getElementById('sizeDown').disabled = !hasSel;
+            document.getElementById('sizeUp').disabled = !hasSel;
+            document.getElementById('layerUpBtn').disabled = !hasSel;
+            document.getElementById('layerDownBtn').disabled = !hasSel;
+            document.getElementById('duplicateBtn').disabled = !hasSel;
+        }
+
+        /* Mouse Wheel to resize selected sticker */
+        canvas.addEventListener('wheel', (e) => {
+            if (selectedSticker && selectedSticker.contains(e.target)) {
+                e.preventDefault();
+                resizeSticker(selectedSticker, e.deltaY < 0 ? 15 : -15);
+            }
+        }, { passive: false });
+
+        /* ==========================================================
+           6. TOOLBAR ACTIONS
+           ========================================================== */
+        document.getElementById('flipBtn').addEventListener('click', () => toggleFlip(selectedSticker));
+        document.getElementById('rotateBtn').addEventListener('click', () => rotateSticker(selectedSticker, 45));
+        document.getElementById('sizeDown').addEventListener('click', () => resizeSticker(selectedSticker, -30));
+        document.getElementById('sizeUp').addEventListener('click', () => resizeSticker(selectedSticker, 30));
+        document.getElementById('layerUpBtn').addEventListener('click', () => changeLayer(selectedSticker, 'up'));
+        document.getElementById('layerDownBtn').addEventListener('click', () => changeLayer(selectedSticker, 'down'));
+        document.getElementById('duplicateBtn').addEventListener('click', () => duplicateSticker(selectedSticker));
+
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        });
+
+        document.getElementById('clearAllBtn').addEventListener('click', () => {
+            const stickers = canvas.querySelectorAll('.sticker');
+            if (stickers.length === 0) return;
+            if (confirm('Clear all stickers from your scene? ✨')) {
+                stickers.forEach(s => s.remove());
+                selectedSticker = null;
+                updateToolbarButtons();
+                updateStickerCount();
+                sfx.play('whoosh');
+                showToast('Canvas Cleared! ✨', '🗑️');
+                pushHistory();
+            }
+        });
+
+        /* ==========================================================
+           7. UNDO / REDO & LOCALSTORAGE PERSISTENCE
+           ========================================================== */
+        const history = [];
+        let historyIndex = -1;
+        let isRestoringHistory = false;
+
+        function serializeScene() {
+            const stickersData = [];
+            canvas.querySelectorAll('.sticker').forEach(el => {
+                stickersData.push({
+                    type: el.dataset.type,
+                    src: el.dataset.src,
+                    name: el.dataset.name,
+                    emoji: el.dataset.emoji,
+                    fallback: el.dataset.fallback,
+                    width: el.dataset.width,
+                    size: el.dataset.size,
+                    rotation: el.dataset.rotation,
+                    flipX: el.dataset.flipX,
+                    zIndex: el.style.zIndex,
+                    left: el.style.left,
+                    top: el.style.top,
+                    text: el.dataset.type === 'speech' ? el.querySelector('.speech-bubble').innerText.trim() : null
+                });
+            });
+            return {
+                bg: currentBg,
+                fx: currentFx,
+                stickers: stickersData
+            };
+        }
+
+        function restoreScene(state) {
+            isRestoringHistory = true;
+            canvas.querySelectorAll('.sticker').forEach(s => s.remove());
+            selectedSticker = null;
+
+            selectBackground(state.bg, false);
+
+            if (state.fx && state.fx !== currentFx) {
+                currentFx = state.fx;
+                document.querySelectorAll('.fx-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.fx === state.fx);
+                });
+                initParticles();
+            }
+
+            state.stickers.forEach(data => {
+                addSticker({
+                    src: data.src,
+                    name: data.name,
+                    emoji: data.emoji,
+                    fallback: data.fallback,
+                    width: data.width ? parseFloat(data.width) : undefined,
+                    size: data.size ? parseFloat(data.size) : undefined,
+                    rotation: data.rotation ? parseFloat(data.rotation) : 0,
+                    flipX: data.flipX ? parseFloat(data.flipX) : 1,
+                    zIndex: data.zIndex ? parseInt(data.zIndex) : undefined,
+                    x: parseFloat(data.left),
+                    y: parseFloat(data.top),
+                    isSpeech: data.type === 'speech',
+                    text: data.text
+                });
+            });
+
+            deselectAll();
+            updateStickerCount();
+            isRestoringHistory = false;
+        }
+
+        function pushHistory() {
+            if (isRestoringHistory) return;
+            const state = serializeScene();
+            // Drop redo future if branching
+            if (historyIndex < history.length - 1) {
+                history.splice(historyIndex + 1);
+            }
+            history.push(JSON.stringify(state));
+            if (history.length > 25) history.shift();
+            historyIndex = history.length - 1;
+
+            updateUndoRedoButtons();
+            saveToLocalStorage();
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                restoreScene(JSON.parse(history[historyIndex]));
+                updateUndoRedoButtons();
+                saveToLocalStorage();
+                sfx.play('whoosh');
+                showToast('Undone ↺', '↺');
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                restoreScene(JSON.parse(history[historyIndex]));
+                updateUndoRedoButtons();
+                saveToLocalStorage();
+                sfx.play('pop');
+                showToast('Redone ↻', '↻');
+            }
+        }
+
+        function updateUndoRedoButtons() {
+            document.getElementById('undoBtn').disabled = historyIndex <= 0;
+            document.getElementById('redoBtn').disabled = historyIndex >= history.length - 1;
+        }
+
+        document.getElementById('undoBtn').addEventListener('click', undo);
+        document.getElementById('redoBtn').addEventListener('click', redo);
+
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('glory_scene_state', JSON.stringify(serializeScene()));
+            } catch (err) {}
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('glory_scene_state');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    restoreScene(state);
+                    pushHistory();
+                    return true;
+                }
+            } catch (err) {}
+            return false;
+        }
+
+        /* ==========================================================
+           8. KEYBOARD SHORTCUTS
+           ========================================================== */
+        window.addEventListener('keydown', (e) => {
+            // If typing inside speech bubble or search input, let it through
+            if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
+                return;
+            }
+
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                if (e.shiftKey) redo();
+                else undo();
+                return;
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+                e.preventDefault();
+                redo();
+                return;
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+                e.preventDefault();
+                if (selectedSticker) duplicateSticker(selectedSticker);
+                return;
+            }
+
+            if (!selectedSticker) return;
+
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                e.preventDefault();
+                deleteSticker(selectedSticker);
+            } else if (e.key.toLowerCase() === 'f') {
+                toggleFlip(selectedSticker);
+            } else if (e.key === '[' || e.key.toLowerCase() === 'r') {
+                rotateSticker(selectedSticker, -15);
+            } else if (e.key === ']') {
+                rotateSticker(selectedSticker, 15);
+            } else if (e.key === '+' || e.key === '=') {
+                resizeSticker(selectedSticker, 20);
+            } else if (e.key === '-' || e.key === '_') {
+                resizeSticker(selectedSticker, -20);
+            } else if (e.key === 'PageUp') {
+                changeLayer(selectedSticker, 'up');
+            } else if (e.key === 'PageDown') {
+                changeLayer(selectedSticker, 'down');
+            } else if (e.key === 'Escape') {
+                deselectAll();
+            } else if (e.key.startsWith('Arrow')) {
+                const step = e.shiftKey ? 12 : 3;
+                let curLeft = parseFloat(selectedSticker.style.left);
+                let curTop = parseFloat(selectedSticker.style.top);
+                if (e.key === 'ArrowLeft') curLeft -= step;
+                if (e.key === 'ArrowRight') curLeft += step;
+                if (e.key === 'ArrowUp') curTop -= step;
+                if (e.key === 'ArrowDown') curTop += step;
+                selectedSticker.style.left = `${curLeft}px`;
+                selectedSticker.style.top = `${curTop}px`;
+                e.preventDefault();
+            }
+        });
+
+        /* ==========================================================
+           9. HIGH-RESOLUTION PNG EXPORT
+           ========================================================== */
+        document.getElementById('saveImageBtn').addEventListener('click', exportScene);
+
+        async function exportScene() {
+            showToast('Creating high-resolution picture... ✨', '🎨');
+            sfx.play('camera');
+
+            const exportCanvas = document.createElement('canvas');
+            const dpr = Math.min(window.devicePixelRatio || 2, 2);
+            const rect = canvas.getBoundingClientRect();
+            exportCanvas.width = rect.width * dpr;
+            exportCanvas.height = rect.height * dpr;
+            const ctx = exportCanvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            // 1. Draw Background
+            if (currentBg === 'gradient') {
+                const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.2, '#ffc0cb');
+                grad.addColorStop(0.35, '#ffe4b5');
+                grad.addColorStop(0.5, '#fffacd');
+                grad.addColorStop(0.65, '#90ee90');
+                grad.addColorStop(0.8, '#87ceeb');
+                grad.addColorStop(0.9, '#dda0dd');
+                grad.addColorStop(1, '#ffffff');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, rect.width, rect.height);
+            } else {
+                const bgObj = BACKGROUNDS.find(b => b.id === currentBg);
+                if (bgObj) {
+                    const bgImg = new Image();
+                    bgImg.src = bgObj.file;
+                    await new Promise((res) => {
+                        if (bgImg.complete) res();
+                        else { bgImg.onload = res; bgImg.onerror = res; }
+                    });
+                    const bgRatio = bgImg.naturalWidth / bgImg.naturalHeight;
+                    const canvasRatio = rect.width / rect.height;
+                    let dw, dh, dx, dy;
+                    if (canvasRatio > bgRatio) {
+                        dw = rect.width;
+                        dh = rect.width / bgRatio;
+                        dx = 0;
+                        dy = (rect.height - dh) / 2;
+                    } else {
+                        dh = rect.height;
+                        dw = rect.height * bgRatio;
+                        dx = (rect.width - dw) / 2;
+                        dy = 0;
+                    }
+                    ctx.drawImage(bgImg, dx, dy, dw, dh);
+                }
+            }
+
+            // 2. Draw Ambient Particles
+            if (currentFx !== 'none') {
+                particles.forEach(p => {
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.font = `${p.size}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(p.char, 0, 0);
+                    ctx.restore();
+                });
+            }
+
+            // 3. Draw Stickers in Layer Order
+            const stickers = Array.from(canvas.querySelectorAll('.sticker'));
+            stickers.sort((a, b) => (parseInt(a.style.zIndex) || 10) - (parseInt(b.style.zIndex) || 10));
+
+            for (const el of stickers) {
+                const elRect = el.getBoundingClientRect();
+                const x = elRect.left - rect.left;
+                const y = elRect.top - rect.top;
+                const w = elRect.width;
+                const h = elRect.height;
+                const cx = x + w / 2;
+                const cy = y + h / 2;
+
+                const rot = (parseFloat(el.dataset.rotation) || 0) * Math.PI / 180;
+                const flipX = parseFloat(el.dataset.flipX) || 1;
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(rot);
+                ctx.scale(flipX, 1);
+
+                if (el.dataset.type === 'image') {
+                    const img = el.querySelector('img');
+                    if (img && img.complete) {
+                        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+                    }
+                } else if (el.dataset.type === 'emoji') {
+                    const emojiEl = el.querySelector('.emoji-content');
+                    const size = parseFloat(el.dataset.size || 72);
+                    ctx.font = `${size}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(emojiEl.innerText.trim(), 0, 0);
+                } else if (el.dataset.type === 'speech') {
+                    const bubble = el.querySelector('.speech-bubble');
+                    const text = bubble.innerText.trim();
+                    const bw = w - 6;
+                    const bh = h - 16;
+                    const bx = -bw / 2;
+                    const by = -bh / 2 - 8;
+
+                    // Bubble body
+                    ctx.fillStyle = '#ffffff';
+                    ctx.strokeStyle = '#ff69b4';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 14);
+                    else ctx.rect(bx, by, bw, bh);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Bubble tail
+                    ctx.beginPath();
+                    ctx.moveTo(bx + 18, by + bh);
+                    ctx.lineTo(bx + 8, by + bh + 14);
+                    ctx.lineTo(bx + 32, by + bh);
+                    ctx.closePath();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Text
+                    ctx.fillStyle = '#2d1847';
+                    ctx.font = 'bold 15px Nunito, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(text, 0, by + bh / 2);
+                }
+
+                ctx.restore();
+            }
+
+            // 4. Watermark Brand
+            ctx.save();
+            ctx.font = "bold 15px 'Fredoka One', cursive";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+            ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+            ctx.shadowBlur = 6;
+            ctx.fillText("Glory's Sticker Studio ⭐", 24, rect.height - 24);
+            ctx.restore();
+
+            // 5. Trigger File Download
+            exportCanvas.toBlob((blob) => {
+                if (!blob) return;
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `glorys-sticker-creation-${Date.now()}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('📸 Picture saved! Check your Downloads folder!', '💖');
+            }, 'image/png');
+        }
+
+        /* Toast helper */
+        let toastTimeout = null;
+        function showToast(msg, icon = '✨') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toastIcon').textContent = icon;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        /* ==========================================================
+           10. INITIALIZATION
+           ========================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            updateToolbarButtons();
+            const restored = loadFromLocalStorage();
+            if (!restored) {
+                // Adorable Starter Scene for Glory!
+                setTimeout(() => {
+                    const rect = canvas.getBoundingClientRect();
+                    const cy = Math.max(80, rect.height / 2 - 120);
+
+                    // Fluttershy
+                    addSticker({
+                        src: 'fluttershy-smirk.png',
+                        name: 'Fluttershy',
+                        x: Math.max(40, rect.width * 0.15),
+                        y: cy,
+                        width: 220
+                    });
+
+                    // Twilight Sparkle
+                    addSticker({
+                        src: 'twilight.png',
+                        name: 'Twilight Sparkle',
+                        x: Math.max(180, rect.width * 0.45),
+                        y: cy - 10,
+                        width: 230
+                    });
+
+                    // Spike
+                    addSticker({
+                        src: 'spike.png',
+                        name: 'Spike',
+                        x: Math.max(120, rect.width * 0.35),
+                        y: cy + 70,
+                        width: 140
+                    });
+
+                    // Speech Bubble
+                    addSticker({
+                        isSpeech: true,
+                        text: "Welcome to our studio, Glory! ✨💖",
+                        x: Math.max(60, rect.width * 0.22),
+                        y: Math.max(20, cy - 70)
+                    });
+
+                    // Little Butterflies
+                    addSticker({
+                        emoji: '🦋',
+                        size: 64,
+                        x: Math.max(20, rect.width * 0.10),
+                        y: Math.max(20, cy - 50)
+                    });
+
+                    addSticker({
+                        emoji: '✨',
+                        size: 54,
+                        x: Math.max(240, rect.width * 0.65),
+                        y: cy + 40
+                    });
+
+                    deselectAll();
+                    pushHistory();
+                }, 150);
+            }
+        });
     </script>
 </body>
 </html>
